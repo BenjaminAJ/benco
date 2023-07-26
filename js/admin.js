@@ -26,34 +26,69 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore();
 
 //Collection Ref Products
-const colRef = collection(db, "products");
+const colRefProd = collection(db, "products");
+const colRefVend = collection(db, "vendors");
 
-
-addProduct.addEventListener('submit', (event)=>{
+//Add product
+addProductFormData.addEventListener('submit', (event)=>{
     event.preventDefault();
 
     //Do validation
-    let title = addProduct.productName.value;
-    let price = addProduct.productPrice.value;
-    let category = addProduct.productCategory.value;
-    let description = addProduct.productDescription.value;
+    let title = addProductFormData.productName.value;
+    let price = addProductFormData.productPrice.value;
+    let category = addProductFormData.productCategory.value;
+    let description = addProductFormData.productDescription.value;
     let datePosted = new Date();
     let sponsored = false;
 
-    addProduct.submitBTN.innerHTML = `
+    addProductFormData.submitBTN.innerHTML = `
     <div class="spinner-border" role="status">
     <span class="visually-hidden">Loading...</span>
   </div>
     `;
-    addDoc(colRef, {title, price, category, description, datePosted, sponsored})
+    addDoc(colRefProd, {title, price, category, description, datePosted, sponsored})
     .then((result) => {
-        addProduct.submitBTN.innerHTML = `submit`;
-        addProduct.productName.value = '';
-        addProduct.productPrice.value = '';
-        addProduct.productCategory.value = '';
-        addProduct.productDescription.value = '';    
+        addProductFormData.submitBTN.innerHTML = `submit`;
+        addProductFormData.productName.value = '';
+        addProductFormData.productPrice.value = '';
+        addProductFormData.productCategory.value = '';
+        addProductFormData.productDescription.value = '';    
         console.log('Product uploaded successfully');
     }).catch((err) => {
         console.error(err.message);
     });
 })
+
+
+//Add vendor
+addVendorFormData.addEventListener('submit', (event)=> {
+    event.preventDefault();
+
+    //Do validation
+    let vendorName = addVendorFormData.vendorName.value;
+    let vendorTelNo = addVendorFormData.vendorTel.value;
+    let vendorDescription = addVendorFormData.vendorDescription.value;
+    let vendorAddress = addVendorFormData.vendorAddress.value;
+    let vendorEmail = addVendorFormData.vendorEmail.value;
+
+    addVendorFormData.submitBTN.innerHTML = `
+    <div class="spinner-border" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+    `;
+
+
+   addDoc(colRefVend, {vendorName, vendorEmail, vendorTelNo, vendorAddress, vendorDescription})
+   .then((result) => {
+    console.log('Vendor has been uploaded successfully');
+    addVendorFormData.submitBTN.innerHTML = `submit`;
+    addVendorFormData.vendorName.value = '';
+    addVendorFormData.vendorTel.value = '';
+    addVendorFormData.vendorDescription.value = '';
+    addVendorFormData.vendorAddress.value = '';
+    addVendorFormData.vendorEmail.value = '';
+
+   }).catch((err) => {
+    console.error(err.message);
+   });  
+});

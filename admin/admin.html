@@ -58,7 +58,7 @@
 
             <!-- FormData -->
             <div class="col-12 col-md-8 formSection">
-                <form action="" id="addProduct" class="d-block mb-4">
+                <form action="" id="addProductFormData" class="d-none mb-4">
                     <h2 class="text-center">Add Product</h2>
                     <div class="form-group">
                         <label for="productName">Product Name:</label>
@@ -86,7 +86,7 @@
                     <button class="btn btn-primary mt-2" name="submitBTN">Submit</button>
                 </form>
 
-                <form action="" id="addVendor" class="d-none">
+                <form action="" id="addVendorFormData" class="">
                     <!-- Add vendor form fields here -->
                     <h2 class="text-center">Add Vendor</h2>
                     <div class="form-group">
@@ -98,6 +98,10 @@
                         <input type="tel" class="form-control" id="vendorTel" name="vendorTel" placeholder="enter telephone number of vendor">
                     </div>
                     <div class="form-group">
+                        <label for="vendorEmail">Email:</label>
+                        <input type="email" class="form-control" id="vendorEmail" name="vendorEmail" placeholder="enter email of vendor">
+                    </div>
+                    <div class="form-group">
                         <label for="vendorDescription">Vendor Description:</label>
                         <textarea class="form-control" id="vendorDescription" name="vendorDescription" rows="4" placeholder="enter vendor description"></textarea>
                     </div>
@@ -105,7 +109,7 @@
                         <label for="vendorAddress">Vendor Address:</label>
                         <textarea class="form-control" id="vendorAddress" name="vendorAddress" rows="3" placeholder="enter vendor address"></textarea>
                     </div>
-
+                    <button class="btn btn-primary mt-2" name="submitBTN">Submit</button>
                 </form>
 
                 <div class="listOfProducts d-none">

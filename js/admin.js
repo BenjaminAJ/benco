@@ -92,3 +92,14 @@ addVendorFormData.addEventListener('submit', (event)=> {
     console.error(err.message);
    });  
 });
+
+//Display vendors
+async function displayVendors(params) {
+    const res = await getDocs(colRefVend);
+    let vendorList = [];
+    res.forEach(vendor => {
+       vendorList.push(vendor.data().vendorName); 
+    });
+    console.log(vendorList);
+}
+displayVendors();

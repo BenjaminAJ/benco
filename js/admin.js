@@ -94,12 +94,18 @@ addVendorFormData.addEventListener('submit', (event)=> {
 });
 
 //Display vendors
-async function displayVendors(params) {
+async function displayVendors() {
     const res = await getDocs(colRefVend);
     let vendorList = [];
     res.forEach(vendor => {
        vendorList.push(vendor.data().vendorName); 
     });
-    console.log(vendorList);
+    vendorList.forEach(vendor => {
+        addProductFormData.productVendor.innerHTML += `
+        <option value="${vendor}">${vendor}</option>
+    
+        `;
+        
+    });
 }
 displayVendors();

@@ -69,7 +69,7 @@ window.addEventListener("load", () => {
         });
   
       } catch (error) {
-        console.error(error);
+        // console.error(error);
       }
       //   All Products
       try {
@@ -92,10 +92,10 @@ window.addEventListener("load", () => {
   
   
       } catch (error) {
-        console.error(error)
+        // console.error(error);
       }
-      console.log(sponsProdList, "sponsored prods");
-      console.log(allProdList, "all prods");
+    //   console.log(sponsProdList, "sponsored prods");
+    //   console.log(allProdList, "all prods");
     })
     .catch((err) => {
       console.error(err.message, 'error message');

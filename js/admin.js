@@ -4,7 +4,9 @@ import {
   getFirestore,
   collection,
   getDocs,
-  addDoc
+  addDoc,
+  doc, 
+  updateDoc 
 } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -38,7 +40,9 @@ addProductFormData.addEventListener('submit', (event)=>{
     let price = addProductFormData.productPrice.value;
     let category = addProductFormData.productCategory.value;
     let description = addProductFormData.productDescription.value;
-    let vendorID = addProductFormData.vendorName.value;
+    let vendorID = addProductFormData.productVendor.value;
+    let vendorName = vendorList.filter((vendor)=> vendor.id === vendorID)
+    vendorName = vendorName[0].vendorName;
     let datePosted = new Date();
     let sponsored = false;
 
@@ -47,14 +51,22 @@ addProductFormData.addEventListener('submit', (event)=>{
     <span class="visually-hidden">Loading...</span>
   </div>
     `;
-    addDoc(colRefProd, {title, price, category, description, datePosted, sponsored})
-    .then((result) => {
+    addDoc(colRefProd, {title, price, category, description, datePosted, sponsored, vendorName})
+    .then((docRef) => {
+        const docId = docRef.id;
         addProductFormData.submitBTN.innerHTML = `submit`;
         addProductFormData.productName.value = '';
         addProductFormData.productPrice.value = '';
         addProductFormData.productCategory.value = '';
         addProductFormData.productDescription.value = '';    
         console.log('Product uploaded successfully');
+
+        updateDoc(doc(db, 'vendors', `${vendorID}` ), {products: [docId]})
+        .then((result) => {
+            console.log('Product added to vendor list');
+        }).catch((err) => {
+            console.error(err.message);
+        });
     }).catch((err) => {
         console.error(err.message);
     });
@@ -94,10 +106,10 @@ addVendorFormData.addEventListener('submit', (event)=> {
    });  
 });
 
+const vendorList = [];
 //Display vendors to addProduct Form
 async function displayVendors() {
     const res = await getDocs(colRefVend);
-    let vendorList = [];
     res.forEach(vendor => {
         let id = vendor.id;
        vendorList.push({id, ...vendor.data()}); 

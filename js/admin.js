@@ -38,6 +38,7 @@ addProductFormData.addEventListener('submit', (event)=>{
     let price = addProductFormData.productPrice.value;
     let category = addProductFormData.productCategory.value;
     let description = addProductFormData.productDescription.value;
+    let vendorID = addProductFormData.vendorName.value;
     let datePosted = new Date();
     let sponsored = false;
 
@@ -93,17 +94,17 @@ addVendorFormData.addEventListener('submit', (event)=> {
    });  
 });
 
-//Display vendors
+//Display vendors to addProduct Form
 async function displayVendors() {
     const res = await getDocs(colRefVend);
     let vendorList = [];
     res.forEach(vendor => {
-       vendorList.push(vendor.data().vendorName); 
+        let id = vendor.id;
+       vendorList.push({id, ...vendor.data()}); 
     });
     vendorList.forEach(vendor => {
         addProductFormData.productVendor.innerHTML += `
-        <option value="${vendor}">${vendor}</option>
-    
+        <option value="${vendor.id}">${vendor.vendorName}</option>
         `;
         
     });

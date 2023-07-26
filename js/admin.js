@@ -6,7 +6,8 @@ import {
   getDocs,
   addDoc,
   doc, 
-  updateDoc 
+  updateDoc ,
+  arrayUnion
 } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -61,7 +62,7 @@ addProductFormData.addEventListener('submit', (event)=>{
         addProductFormData.productDescription.value = '';    
         console.log('Product uploaded successfully');
 
-        updateDoc(doc(db, 'vendors', `${vendorID}` ), {products: [docId]})
+        updateDoc(doc(db, 'vendors', `${vendorID}` ), {products: arrayUnion(docId)})
         .then((result) => {
             console.log('Product added to vendor list');
         }).catch((err) => {
@@ -122,3 +123,17 @@ async function displayVendors() {
     });
 }
 displayVendors();
+
+
+dashboardSection.addEventListener('click', (event)=>{
+    console.log(event.target);
+})
+
+function changeDisplay(params) {
+    const obj = {
+        addProduct: 'addProduct',
+        addVendor: 'addVendor',
+        Vendors: 'Vendors',
+        Products: 'Products',
+ }
+}

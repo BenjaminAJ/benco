@@ -8,3 +8,27 @@
 .nav-link {
   text-transform: capitalize;
 }
+
+body .hero {
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/benco-c0122.appspot.com/o/images%2FheroPage%2Ftoronto-stunning-sunset.jpg?alt=media&token=575c4a0f-6adc-4178-a38b-f21f75913aaa");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 400px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: #fff;
+}
+body .hero h1 {
+  font-size: 48px;
+}
+body .hero p {
+  font-size: 24px;
+}

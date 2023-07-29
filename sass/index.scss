@@ -7,3 +7,25 @@
     text-transform: capitalize;
 }
 
+body{
+    .hero {
+        background-image: url('https://firebasestorage.googleapis.com/v0/b/benco-c0122.appspot.com/o/images%2FheroPage%2Ftoronto-stunning-sunset.jpg?alt=media&token=575c4a0f-6adc-4178-a38b-f21f75913aaa');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        h1 {
+            font-size: 48px;
+        }
+        p {
+            font-size: 24px;
+        }
+    }
+
+
+
+}

@@ -9,6 +9,27 @@
   text-transform: capitalize;
 }
 
+body {
+  background-color: #f8f9fa; /* Light Gray */
+}
+body .catSection {
+  background-color: #e9ecef; /* Light Gray */
+}
+body .sponsAdSec {
+  background-color: #f8f9fa; /* Light Gray */
+}
+body .sponsAdSec .sponsAd .card {
+  border: none;
+}
+body .allProdSec {
+  background-color: #e9ecef; /* Light Gray */
+}
+body .allProdSec .allProd .card {
+  border: none;
+}
+body .navbar {
+  background-color: #007bff; /* Blue */
+}
 body .hero {
   background-image: url("https://firebasestorage.googleapis.com/v0/b/benco-c0122.appspot.com/o/images%2FheroPage%2Ftoronto-stunning-sunset.jpg?alt=media&token=575c4a0f-6adc-4178-a38b-f21f75913aaa");
   background-size: cover;
@@ -31,4 +52,10 @@ body .hero h1 {
 }
 body .hero p {
   font-size: 24px;
+}
+
+.fixed-height-image {
+  height: 200px;
+  -o-object-fit: cover;
+     object-fit: cover;
 }

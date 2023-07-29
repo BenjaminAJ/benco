@@ -55,8 +55,8 @@ window.addEventListener("load", () => {
           }
           sponsAdDiv.innerHTML += `
           <div class="col-12 col-md-4">
-              <div class="card text-black" style="max-width: 18rem;">
-              <img src="${prod.imgURL}" class="card-img-top" alt="...">
+              <div class="card bg-light" style="max-width: 18rem;">
+              <img src="${prod.imgURL}" class="card-img-top fixed-height-image" alt="${prod.title}-img">
               <div class="card-body">
                 <h5 class="card-title">${prod.title}</h5>
                 <p class="card-text">${prod.description.slice(0, 100)}...</p>
@@ -78,8 +78,8 @@ window.addEventListener("load", () => {
         allProdList.forEach((prod) => {
           allProdDiv.innerHTML += `
           <div class="col-12 col-md-4 mb-4">
-          <div class="card text-black">
-              <img src="${prod.imgURL}" class="card-img-top" alt="...">
+          <div class="card bg-light">
+              <img src="${prod.imgURL}" class="card-img-top fixed-height-image" alt="${prod.title}-img">
               <div class="card-body">
                   <h5 class="card-title">${prod.title}</h5>
                   <p class="card-text">${prod.description.slice(0, 100)}...</p>

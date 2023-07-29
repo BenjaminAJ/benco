@@ -1,5 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+import { getStorage, ref, uploadBytes ,getDownloadURL } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-storage.js";
 import {
   getFirestore,
   collection,
@@ -7,7 +8,7 @@ import {
   addDoc,
   doc, 
   updateDoc ,
-  arrayUnion
+  arrayUnion, 
 } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -28,6 +29,9 @@ const app = initializeApp(firebaseConfig);
 //Initialize Database
 const db = getFirestore();
 
+//Storage
+const storage = getStorage();
+
 //Collection Ref Products
 const colRefProd = collection(db, "products");
 const colRefVend = collection(db, "vendors");
@@ -46,28 +50,48 @@ addProductFormData.addEventListener('submit', (event)=>{
     vendorName = vendorName[0].vendorName;
     let datePosted = new Date();
     let sponsored = false;
+    let productImg = addProductFormData.productImg.files[0];
 
     addProductFormData.submitBTN.innerHTML = `
     <div class="spinner-border" role="status">
     <span class="visually-hidden">Loading...</span>
   </div>
     `;
-    addDoc(colRefProd, {title, price, category, description, datePosted, sponsored, vendorName})
-    .then((docRef) => {
-        const docId = docRef.id;
-        addProductFormData.submitBTN.innerHTML = `submit`;
-        addProductFormData.productName.value = '';
-        addProductFormData.productPrice.value = '';
-        addProductFormData.productCategory.value = '';
-        addProductFormData.productDescription.value = '';    
-        console.log('Product uploaded successfully');
 
-        updateDoc(doc(db, 'vendors', `${vendorID}` ), {products: arrayUnion(docId)})
-        .then((result) => {
-            console.log('Product added to vendor list');
+    const storageRef = ref(storage, `images/${category}/${productImg.fileName}`)
+    uploadBytes(storageRef, productImg)
+    .then((result) => {
+        console.log('File uploaded', `location: `, `images/${category}/${productImg.fileName}`);
+        getDownloadURL(storageRef)
+        .then((downloadURL) => {
+            const imgURL = downloadURL;
+            console.log('File available at:', downloadURL);
+
+            //Add to collection
+            addDoc(colRefProd, {title, price, category, description, datePosted, sponsored, vendorName, imgURL})
+            .then((docRef) => {
+                const docId = docRef.id;
+                addProductFormData.submitBTN.innerHTML = `submit`;
+                addProductFormData.productName.value = '';
+                addProductFormData.productPrice.value = '';
+                addProductFormData.productCategory.value = '';
+                addProductFormData.productDescription.value = '';   
+                console.log('Product uploaded successfully');
+                
+                //Update vendor product list
+                updateDoc(doc(db, 'vendors', `${vendorID}` ), {products: arrayUnion(docId)})
+                .then((result) => {
+                    console.log('Product added to vendor list');
+                }).catch((err) => {
+                    console.error(err.message);
+                });
+            }).catch((err) => {
+                console.error(err.message);
+            });
+    
         }).catch((err) => {
             console.error(err.message);
-        });
+        });    
     }).catch((err) => {
         console.error(err.message);
     });
@@ -129,11 +153,3 @@ dashboardSection.addEventListener('click', (event)=>{
     console.log(event.target);
 })
 
-function changeDisplay(params) {
-    const obj = {
-        addProduct: 'addProduct',
-        addVendor: 'addVendor',
-        Vendors: 'Vendors',
-        Products: 'Products',
- }
-}

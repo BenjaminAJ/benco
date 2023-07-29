@@ -1,5 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+import { GoogleAuthProvider, getAuth, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
 import {
   getFirestore,
   collection,
@@ -26,6 +27,10 @@ const db = getFirestore();
 
 //Collection Ref Products
 const colRef = collection(db, "products");
+//auth
+const auth = getAuth();
+//Google auth
+const provider = new GoogleAuthProvider();
 
 // declarations
 const sponsAdDiv = document.querySelector(".sponsAd");
@@ -34,7 +39,7 @@ const sponsProdList = [];
 const allProdList = [];
 
 // Display products
-window.addEventListener("load", () => {
+window.addEventListener("load", async () => {
   getDocs(colRef)
     .then((result) => {
       result.forEach((product) => {
@@ -50,7 +55,7 @@ window.addEventListener("load", () => {
         sponsAdDiv.innerHTML = "";
         sponsAdTitle.classList.remove('d-none');
         sponsProdList.forEach((prod, index) => {
-          if (index === 3 ) {
+          if (index === 3 ) { //Only show 3 sponsored products
               return
           }
           sponsAdDiv.innerHTML += `

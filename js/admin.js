@@ -52,6 +52,9 @@ addProductFormData.addEventListener('submit', (event)=>{
     let sponsored = false;
     let productImg = addProductFormData.productImg.files[0];
 
+    successfulUpload.classList.add('d-none');
+
+
     addProductFormData.submitBTN.innerHTML = `
     <div class="spinner-border" role="status">
     <span class="visually-hidden">Loading...</span>
@@ -76,6 +79,7 @@ addProductFormData.addEventListener('submit', (event)=>{
                 addProductFormData.productPrice.value = '';
                 addProductFormData.productCategory.value = '';
                 addProductFormData.productDescription.value = '';   
+                successfulUpload.classList.toggle('d-none');
                 console.log('Product uploaded successfully');
                 
                 //Update vendor product list

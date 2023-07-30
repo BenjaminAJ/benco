@@ -44,12 +44,14 @@ body .hero {
       -ms-flex-pack: center;
           justify-content: center;
   color: #fff;
+  -webkit-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adjust the values as needed */
 }
 body .hero h1 {
-  font-size: 48px;
+  font-size: 3rem;
 }
 body .hero p {
-  font-size: 24px;
+  font-size: 1.5rem;
 }
 
 .fixed-height-image {

@@ -135,7 +135,9 @@ signInWithEmailAndPasswordBTN.addEventListener('click', (event) => {
   signInWithEmailAndPassword(auth, email, password)
     .then((result) => {
       signInWithEmailAndPasswordBTN.innerHTML = `Sign In`;
-      location.reload();
+      setTimeout(() => {
+        location.reload();
+      }, 3000);
       console.log('User signed In');
     }).catch((err) => {
       signInWithEmailAndPasswordBTN.innerHTML = `Sign In`;
@@ -153,6 +155,10 @@ window.addEventListener('load', async () => {
       // https://firebase.google.com/docs/reference/js/auth.user
       const uid = user.uid;
       signOutDiv.classList.toggle('d-none');
+      signOutDiv.innerHTML = `
+      <li class="nav-item me-2">Hi, ${user.displayName}</li>
+      <li class="nav-item btn btn-dark">Sign Out</li>
+      `;
       signInDiv.classList.toggle('d-none');
       // ...
     } else {
@@ -215,7 +221,9 @@ signUpFormData.addEventListener('click', async (event) => {
                 .then(() => {
                   // Profile updated!
                   console.log('Profile Updated');
-                  location.reload();
+                  setTimeout(() => {
+                    location.reload();
+                  }, 3000);
                   // ...
                 }).catch((error) => {
                   // An error occurred
@@ -223,7 +231,7 @@ signUpFormData.addEventListener('click', async (event) => {
                   console.error(error);
                 });
             }
-            else{
+            else {
               console.error('User is not signed in');
             }
           })
@@ -237,9 +245,10 @@ signUpFormData.addEventListener('click', async (event) => {
 
 
 //Sign out User
-signOutDiv.addEventListener('click', ()=>{
+signOutDiv.addEventListener('click', () => {
   signOutUser();
 })
+
 function signOutUser() {
   signOut(auth)
     .then(() => {
@@ -253,4 +262,11 @@ function signOutUser() {
 
 }
 
-console.log(auth);
+async function showCurrentUser(params) {
+
+  onAuthStateChanged(auth, (user)=>{
+    console.log('username:', user.displayName);
+  })
+  
+}
+showCurrentUser();

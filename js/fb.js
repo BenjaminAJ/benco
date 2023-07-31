@@ -7,7 +7,8 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
-  signOut
+  signOut,
+  updateProfile
 } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
 import {
   getFirestore,
@@ -57,7 +58,7 @@ const spinnerPL = `
 `;
 // Display products
 try {
-  window.addEventListener("load",  () => {
+  window.addEventListener("load", () => {
     getDocs(colRef)
       .then((result) => {
         result.forEach((product) => {
@@ -67,15 +68,15 @@ try {
           }
           allProdList.push({ id, ...product.data() });
         });
-          spinner.classList.add('d-none');
-          // Sponsored products
-          sponsAdDiv.innerHTML = "";
-          sponsAdTitle.classList.remove('d-none');
-          sponsProdList.forEach((prod, index) => {
-            if (index === 3) { //Only show 3 sponsored products
-              return
-            }
-            sponsAdDiv.innerHTML += `
+        spinner.classList.add('d-none');
+        // Sponsored products
+        sponsAdDiv.innerHTML = "";
+        sponsAdTitle.classList.remove('d-none');
+        sponsProdList.forEach((prod, index) => {
+          if (index === 3) { //Only show 3 sponsored products
+            return
+          }
+          sponsAdDiv.innerHTML += `
             <div class="col-12 col-md-4">
                 <div class="card bg-light" style="max-width: 18rem;">
                 <img src="${prod.imgURL}" class="card-img-top fixed-height-image" alt="${prod.title}-img">
@@ -88,13 +89,13 @@ try {
               <div>
     
                 `;
-          });
-  
+        });
+
         //   All Products
-          allProdDiv.innerHTML = "";
-          allPodTitle.classList.remove('d-none');
-          allProdList.forEach((prod) => {
-            allProdDiv.innerHTML += `
+        allProdDiv.innerHTML = "";
+        allPodTitle.classList.remove('d-none');
+        allProdList.forEach((prod) => {
+          allProdDiv.innerHTML += `
             <div class="col-12 col-md-4 mb-4">
             <div class="card bg-light">
                 <img src="${prod.imgURL}" class="card-img-top fixed-height-image" alt="${prod.title}-img">
@@ -106,9 +107,9 @@ try {
             </div>
         </div>
                 `;
-          });
-  
-  
+        });
+
+
         //   console.log(sponsProdList, "sponsored prods");
         //   console.log(allProdList, "all prods");
       })
@@ -116,7 +117,7 @@ try {
         console.error(err.message, 'error message');
       });
   });
-  
+
 } catch (error) {
   console.error(error);
 }
@@ -163,7 +164,7 @@ window.addEventListener('load', async () => {
 
 //SignInWithGoogle Module
 
-signInWithGoogleBTN.addEventListener('click', async (event)=>{
+signInWithGoogleBTN.addEventListener('click', async (event) => {
   event.preventDefault();
 
   signInWithPopup(auth, provider)
@@ -196,33 +197,60 @@ signUpFormData.addEventListener('click', async (event) => {
   if (event.target.nodeName === 'BUTTON') {
     if (event.target.innerText === 'Sign Up') {
 
+      event.target.innerHTML = `${spinnerPL}`;
+
       const username = signUpFormData.username.value;
       const email = signUpFormData.email.value;
       const password = signUpFormData.password.value;
 
       createUserWithEmailAndPassword(auth, email, password)
-      .then((result) => {
-        console.log('User account created and user signed in');
-      }).catch((err) => {
-        console.error(err.message);
-      });
+        .then((result) => {
+          event.target.innerHTML = `Sign Up`;
+          console.log('User account created and user signed in');
+          onAuthStateChanged(auth, (user) => {
+            if (user) {
+              updateProfile(auth.currentUser, {
+                displayName: username
+              })
+                .then(() => {
+                  // Profile updated!
+                  console.log('Profile Updated');
+                  location.reload();
+                  // ...
+                }).catch((error) => {
+                  // An error occurred
+                  // ...
+                  console.error(error);
+                });
+            }
+            else{
+              console.error('User is not signed in');
+            }
+          })
+        }).catch((err) => {
+          event.target.innerHTML = `Sign Up`;
+          console.error(err.message);
+        });
     }
   }
-  console.log(event.target.innerText);
-  console.log('Tried to sign up');
 })
 
 
 //Sign out User
-
+signOutDiv.addEventListener('click', ()=>{
+  signOutUser();
+})
 function signOutUser() {
   signOut(auth)
     .then(() => {
       // Sign-out successful.
       console.log('User signed Out successfully');
+      location.reload();
     }).catch((error) => {
       console.error(err.message);
       // An error happened.
     });
 
 }
+
+console.log(auth);

@@ -262,7 +262,7 @@ function signOutUser() {
 
 }
 
-async function showCurrentUser(params) {
+async function showCurrentUser() {
 
   onAuthStateChanged(auth, (user)=>{
     console.log('username:', user.displayName);

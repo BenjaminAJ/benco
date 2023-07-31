@@ -1,6 +1,12 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
-import { GoogleAuthProvider, getAuth, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
+import { GoogleAuthProvider, 
+  getAuth, 
+  signInWithPopup , 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword,
+  onAuthStateChanged,  
+} from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
 import {
   getFirestore,
   collection,
@@ -27,8 +33,10 @@ const db = getFirestore();
 
 //Collection Ref Products
 const colRef = collection(db, "products");
+
 //auth
 const auth = getAuth();
+
 //Google auth
 const provider = new GoogleAuthProvider();
 
@@ -37,7 +45,14 @@ const sponsAdDiv = document.querySelector(".sponsAd");
 const allProdDiv = document.querySelector(".allProd");
 const sponsProdList = [];
 const allProdList = [];
+const spinnerPL = `
+<div class="spinnerDiv d-flex justify-content-center">
+<div id="spinner" class="spinner-border" role="status">
+    <span class="visually-hidden">Loading...</span>
+</div>
+</div>
 
+`;
 // Display products
 window.addEventListener("load", async () => {
   getDocs(colRef)
@@ -106,3 +121,67 @@ window.addEventListener("load", async () => {
       console.error(err.message, 'error message');
     });
 });
+
+
+//SignIn with Email and password
+signInWithEmailAndPasswordBTN.addEventListener('click', (event)=>{
+  event.preventDefault();
+
+  const email = signInFormData.email.value;
+  const password = signInFormData.password.value;
+
+  signInWithEmailAndPasswordBTN.innerHTML = `${spinnerPL}`
+
+  signInWithEmailAndPassword(auth, email, password)
+  .then((result) => {
+  signInWithEmailAndPasswordBTN.innerHTML = `Sign In`;
+  location.reload();
+    console.log('User signed In');
+  }).catch((err) => {
+    console.error(err.message);
+    console.error(err.code);
+  });
+})
+
+//SignInWithGoogle Module
+
+signInWithGoogleBTN.addEventListener('click', async (event) =>{
+  event.preventDefault();
+
+signInWithPopup(auth, provider)
+  .then((result) => {
+    // This gives you a Google Access Token. You can use it to access the Google API.
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    const token = credential.accessToken;
+    // The signed-in user info.
+    const user = result.user;
+    // IdP data available using getAdditionalUserInfo(result)
+    // ...
+  }).catch((error) => {
+    // Handle Errors here.
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // The email of the user's account used.
+    const email = error.customData.email;
+    // The AuthCredential type that was used.
+    const credential = GoogleAuthProvider.credentialFromError(error);
+    // ...
+  });
+})
+
+//check if user is signed in
+window.addEventListener('load', async () => {
+ onAuthStateChanged( auth, (user) => {
+    if (user) {
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/auth.user
+      const uid = user.uid;
+      signOutDiv.classList.toggle('d-none');
+      signInDiv.classList.toggle('d-none');
+      // ...
+    } else {
+      // User is signed out
+      // ...
+    }
+  });
+} )

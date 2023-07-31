@@ -21,7 +21,7 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto" id="signInDiv">
                     <li class="nav-item">
                         <a href="#" class="nav-link text-white" data-bs-toggle="modal"
                             data-bs-target="#signInModal">Sign In</a> <!-- Button trigger modal -->
@@ -36,6 +36,9 @@
                     <li class="nav-item">
                         <a href="#" class="btn btn-dark">Sell</a>
                     </li>
+                </ul>
+                <ul class="navbar-nav ms-auto text-white d-none" id="signOutDiv">
+                    <li class="nav-item">Sign Out</li>
                 </ul>
             </div>
         </div>
@@ -131,10 +134,10 @@
                                 <input type="password" class="form-control" name="password">
                             </div>
                             <div>
-                                <button type="button" class="btn btn-primary mt-2" data-bs-dismiss="modal">Sign
+                                <button type="button" class="btn btn-primary mt-2"  id="signInWithEmailAndPasswordBTN">Sign
                                     In</button>
                                 <!-- Add button for signing in with Google -->
-                                <button type="button" class="btn btn-google mt-2"><span>
+                                <button type="button" class="btn btn-google mt-2" id="signInWithGoogleBTN"><span>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-google" viewBox="0 0 16 16">
                                             <path

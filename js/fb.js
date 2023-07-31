@@ -200,6 +200,9 @@ signInWithGoogleBTN.addEventListener('click', async (event) => {
 signUpFormData.addEventListener('click', (event) => {
   event.preventDefault();
 
+  const errorMessage = document.querySelector('.error');
+
+
   if (event.target.nodeName === 'BUTTON') {
     if (event.target.innerText === 'Sign Up') {
 
@@ -212,40 +215,40 @@ signUpFormData.addEventListener('click', (event) => {
 
       if (password === confirmPwd) {
         createUserWithEmailAndPassword(auth, email, password)
-        .then((result) => {
-          event.target.innerHTML = `Sign Up`;
-          console.log('User account created and user signed in');
-          onAuthStateChanged(auth, (user) => {
-            if (user) {
-              updateProfile(auth.currentUser, {
-                displayName: username
-              })
-                .then(() => {
-                  // Profile updated!
-                  console.log('Profile Updated');
-                  setTimeout(() => {
-                    location.reload();
-                  }, 3000);
-                  // ...
-                }).catch((error) => {
-                  // An error occurred
-                  // ...
-                  console.error(error);
-                });
-            }
-            else {
-              console.error('User is not signed in');
-            }
-          })
-        }).catch((err) => {
-          event.target.innerHTML = `Sign Up`;
-          console.error(err.message);
-        });
+          .then((result) => {
+            event.target.innerHTML = `Sign Up`;
+            console.log('User account created and user signed in');
+            onAuthStateChanged(auth, (user) => {
+              if (user) {
+                updateProfile(auth.currentUser, {
+                  displayName: username
+                })
+                  .then(() => {
+                    // Profile updated!
+                    console.log('Profile Updated');
+                    setTimeout(() => {
+                      location.reload();
+                    }, 3000);
+                    // ...
+                  }).catch((error) => {
+                    // An error occurred
+                    // ...
+                    console.error(error);
+                  });
+              }
+              else {
+                console.error('User was unable to sign in');
+              }
+            })
+          }).catch((err) => {
+            event.target.innerHTML = `Sign Up`;
+            errorMessage.innerHTML = `${err.message}`;
+            console.error(err.message);
+          });
 
       }
-      else{
+      else {
         //Password does not match
-        const errorMessage = document.querySelector('.error');
         errorMessage.innerHTML = '*Password does not match';
         event.target.innerHTML = `Sign Up`;
         // console.log('Password does not match');
@@ -276,11 +279,11 @@ function signOutUser() {
 
 async function showCurrentUser() {
 
-  onAuthStateChanged(auth, (user)=>{
+  onAuthStateChanged(auth, (user) => {
     if (user) {
       console.log('username:', user.displayName);
     }
   })
-  
+
 }
 showCurrentUser();

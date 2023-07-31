@@ -1,11 +1,13 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
-import { GoogleAuthProvider, 
-  getAuth, 
-  signInWithPopup , 
-  createUserWithEmailAndPassword, 
+import {
+  GoogleAuthProvider,
+  getAuth,
+  signInWithPopup,
+  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  onAuthStateChanged,  
+  onAuthStateChanged,
+  signOut 
 } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
 import {
   getFirestore,
@@ -70,8 +72,8 @@ window.addEventListener("load", async () => {
         sponsAdDiv.innerHTML = "";
         sponsAdTitle.classList.remove('d-none');
         sponsProdList.forEach((prod, index) => {
-          if (index === 3 ) { //Only show 3 sponsored products
-              return
+          if (index === 3) { //Only show 3 sponsored products
+            return
           }
           sponsAdDiv.innerHTML += `
           <div class="col-12 col-md-4">
@@ -87,7 +89,7 @@ window.addEventListener("load", async () => {
   
               `;
         });
-  
+
       } catch (error) {
         // console.error(error);
       }
@@ -109,13 +111,13 @@ window.addEventListener("load", async () => {
       </div>
               `;
         });
-  
-  
+
+
       } catch (error) {
         // console.error(error);
       }
-    //   console.log(sponsProdList, "sponsored prods");
-    //   console.log(allProdList, "all prods");
+      //   console.log(sponsProdList, "sponsored prods");
+      //   console.log(allProdList, "all prods");
     })
     .catch((err) => {
       console.error(err.message, 'error message');
@@ -124,7 +126,7 @@ window.addEventListener("load", async () => {
 
 
 //SignIn with Email and password
-signInWithEmailAndPasswordBTN.addEventListener('click', (event)=>{
+signInWithEmailAndPasswordBTN.addEventListener('click', (event) => {
   event.preventDefault();
 
   const email = signInFormData.email.value;
@@ -133,45 +135,21 @@ signInWithEmailAndPasswordBTN.addEventListener('click', (event)=>{
   signInWithEmailAndPasswordBTN.innerHTML = `${spinnerPL}`
 
   signInWithEmailAndPassword(auth, email, password)
-  .then((result) => {
-  signInWithEmailAndPasswordBTN.innerHTML = `Sign In`;
-  location.reload();
-    console.log('User signed In');
-  }).catch((err) => {
-    console.error(err.message);
-    console.error(err.code);
-  });
+    .then((result) => {
+      signInWithEmailAndPasswordBTN.innerHTML = `Sign In`;
+      location.reload();
+      console.log('User signed In');
+    }).catch((err) => {
+      signInWithEmailAndPasswordBTN.innerHTML = `Sign In`;
+      console.error(err.message);
+      console.error(err.code);
+    });
 })
 
-//SignInWithGoogle Module
-
-signInWithGoogleBTN.addEventListener('click', async (event) =>{
-  event.preventDefault();
-
-signInWithPopup(auth, provider)
-  .then((result) => {
-    // This gives you a Google Access Token. You can use it to access the Google API.
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential.accessToken;
-    // The signed-in user info.
-    const user = result.user;
-    // IdP data available using getAdditionalUserInfo(result)
-    // ...
-  }).catch((error) => {
-    // Handle Errors here.
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // The email of the user's account used.
-    const email = error.customData.email;
-    // The AuthCredential type that was used.
-    const credential = GoogleAuthProvider.credentialFromError(error);
-    // ...
-  });
-})
 
 //check if user is signed in
 window.addEventListener('load', async () => {
- onAuthStateChanged( auth, (user) => {
+  onAuthStateChanged(auth, (user) => {
     if (user) {
       // User is signed in, see docs for a list of available properties
       // https://firebase.google.com/docs/reference/js/auth.user
@@ -184,4 +162,62 @@ window.addEventListener('load', async () => {
       // ...
     }
   });
-} )
+})
+
+//Sign up with email and password
+
+signUpFormData.addEventListener('click', async (event) => {
+  event.preventDefault();
+
+  if (event.target.nodeName === 'BUTTON') {
+    if (event.target.innerText === 'Sign Up') {
+      console.log('Sig Up');
+    }
+    if (event.target.innerText === 'Sign up with Google') {
+      console.log('gogle');
+
+      // return
+
+      //SignInWithGoogle Module
+
+
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          // This gives you a Google Access Token. You can use it to access the Google API.
+          const credential = GoogleAuthProvider.credentialFromResult(result);
+          const token = credential.accessToken;
+          // The signed-in user info.
+          const user = result.user;
+          // IdP data available using getAdditionalUserInfo(result)
+          // ...
+        }).catch((error) => {
+          // Handle Errors here.
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // The email of the user's account used.
+          const email = error.customData.email;
+          // The AuthCredential type that was used.
+          const credential = GoogleAuthProvider.credentialFromError(error);
+          // ...
+        })
+
+    }
+  }
+  console.log(event.target.innerText);
+  console.log('Tried to sign up');
+})
+
+
+//Sign out User
+
+function signOutUser() {
+  signOut(auth)
+  .then(() => {
+    // Sign-out successful.
+    console.log('User signed Out successfully');
+  }).catch((error) => {
+    console.error(err.message);
+    // An error happened.
+  });
+  
+}

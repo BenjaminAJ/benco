@@ -7,7 +7,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
-  signOut 
+  signOut
 } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
 import {
   getFirestore,
@@ -56,73 +56,70 @@ const spinnerPL = `
 
 `;
 // Display products
-window.addEventListener("load", async () => {
-  getDocs(colRef)
-    .then((result) => {
-      result.forEach((product) => {
-        let id = product.id;
-        if (product.data().sponsored) {
-          sponsProdList.push({ id, ...product.data() });
-        }
-        allProdList.push({ id, ...product.data() });
-      });
-      try {
-        spinner.classList.add('d-none');
-        // Sponsored products
-        sponsAdDiv.innerHTML = "";
-        sponsAdTitle.classList.remove('d-none');
-        sponsProdList.forEach((prod, index) => {
-          if (index === 3) { //Only show 3 sponsored products
-            return
+try {
+  window.addEventListener("load",  () => {
+    getDocs(colRef)
+      .then((result) => {
+        result.forEach((product) => {
+          let id = product.id;
+          if (product.data().sponsored === true) {
+            sponsProdList.push({ id, ...product.data() });
           }
-          sponsAdDiv.innerHTML += `
-          <div class="col-12 col-md-4">
-              <div class="card bg-light" style="max-width: 18rem;">
-              <img src="${prod.imgURL}" class="card-img-top fixed-height-image" alt="${prod.title}-img">
-              <div class="card-body">
-                <h5 class="card-title">${prod.title}</h5>
-                <p class="card-text">${prod.description.slice(0, 100)}...</p>
-                <a href="#" class="btn btn-primary">Contact Vendor</a>
-              </div>
-            </div>
-            <div>
-  
-              `;
+          allProdList.push({ id, ...product.data() });
         });
-
-      } catch (error) {
-        // console.error(error);
-      }
-      //   All Products
-      try {
-        allProdDiv.innerHTML = "";
-        allPodTitle.classList.remove('d-none');
-        allProdList.forEach((prod) => {
-          allProdDiv.innerHTML += `
-          <div class="col-12 col-md-4 mb-4">
-          <div class="card bg-light">
-              <img src="${prod.imgURL}" class="card-img-top fixed-height-image" alt="${prod.title}-img">
-              <div class="card-body">
+          spinner.classList.add('d-none');
+          // Sponsored products
+          sponsAdDiv.innerHTML = "";
+          sponsAdTitle.classList.remove('d-none');
+          sponsProdList.forEach((prod, index) => {
+            if (index === 3) { //Only show 3 sponsored products
+              return
+            }
+            sponsAdDiv.innerHTML += `
+            <div class="col-12 col-md-4">
+                <div class="card bg-light" style="max-width: 18rem;">
+                <img src="${prod.imgURL}" class="card-img-top fixed-height-image" alt="${prod.title}-img">
+                <div class="card-body">
                   <h5 class="card-title">${prod.title}</h5>
                   <p class="card-text">${prod.description.slice(0, 100)}...</p>
                   <a href="#" class="btn btn-primary">Contact Vendor</a>
+                </div>
               </div>
-          </div>
-      </div>
-              `;
-        });
-
-
-      } catch (error) {
-        // console.error(error);
-      }
-      //   console.log(sponsProdList, "sponsored prods");
-      //   console.log(allProdList, "all prods");
-    })
-    .catch((err) => {
-      console.error(err.message, 'error message');
-    });
-});
+              <div>
+    
+                `;
+          });
+  
+        //   All Products
+          allProdDiv.innerHTML = "";
+          allPodTitle.classList.remove('d-none');
+          allProdList.forEach((prod) => {
+            allProdDiv.innerHTML += `
+            <div class="col-12 col-md-4 mb-4">
+            <div class="card bg-light">
+                <img src="${prod.imgURL}" class="card-img-top fixed-height-image" alt="${prod.title}-img">
+                <div class="card-body">
+                    <h5 class="card-title">${prod.title}</h5>
+                    <p class="card-text">${prod.description.slice(0, 100)}...</p>
+                    <a href="#" class="btn btn-primary">Contact Vendor</a>
+                </div>
+            </div>
+        </div>
+                `;
+          });
+  
+  
+        //   console.log(sponsProdList, "sponsored prods");
+        //   console.log(allProdList, "all prods");
+      })
+      .catch((err) => {
+        console.error(err.message, 'error message');
+      });
+  });
+  
+} catch (error) {
+  console.error(error);
+}
 
 
 //SignIn with Email and password
@@ -164,6 +161,33 @@ window.addEventListener('load', async () => {
   });
 })
 
+//SignInWithGoogle Module
+
+signInWithGoogleBTN.addEventListener('click', async (event)=>{
+  event.preventDefault();
+
+  signInWithPopup(auth, provider)
+    .then((result) => {
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      // The signed-in user info.
+      const user = result.user;
+      // IdP data available using getAdditionalUserInfo(result)
+      // ...
+    }).catch((error) => {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.customData.email;
+      // The AuthCredential type that was used.
+      const credential = GoogleAuthProvider.credentialFromError(error);
+      // ...
+    })
+})
+
+
 //Sign up with email and password
 
 signUpFormData.addEventListener('click', async (event) => {
@@ -171,36 +195,17 @@ signUpFormData.addEventListener('click', async (event) => {
 
   if (event.target.nodeName === 'BUTTON') {
     if (event.target.innerText === 'Sign Up') {
-      console.log('Sig Up');
-    }
-    if (event.target.innerText === 'Sign up with Google') {
-      console.log('gogle');
 
-      // return
+      const username = signUpFormData.username.value;
+      const email = signUpFormData.email.value;
+      const password = signUpFormData.password.value;
 
-      //SignInWithGoogle Module
-
-
-      signInWithPopup(auth, provider)
-        .then((result) => {
-          // This gives you a Google Access Token. You can use it to access the Google API.
-          const credential = GoogleAuthProvider.credentialFromResult(result);
-          const token = credential.accessToken;
-          // The signed-in user info.
-          const user = result.user;
-          // IdP data available using getAdditionalUserInfo(result)
-          // ...
-        }).catch((error) => {
-          // Handle Errors here.
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          // The email of the user's account used.
-          const email = error.customData.email;
-          // The AuthCredential type that was used.
-          const credential = GoogleAuthProvider.credentialFromError(error);
-          // ...
-        })
-
+      createUserWithEmailAndPassword(auth, email, password)
+      .then((result) => {
+        console.log('User account created and user signed in');
+      }).catch((err) => {
+        console.error(err.message);
+      });
     }
   }
   console.log(event.target.innerText);
@@ -212,12 +217,12 @@ signUpFormData.addEventListener('click', async (event) => {
 
 function signOutUser() {
   signOut(auth)
-  .then(() => {
-    // Sign-out successful.
-    console.log('User signed Out successfully');
-  }).catch((error) => {
-    console.error(err.message);
-    // An error happened.
-  });
-  
+    .then(() => {
+      // Sign-out successful.
+      console.log('User signed Out successfully');
+    }).catch((error) => {
+      console.error(err.message);
+      // An error happened.
+    });
+
 }

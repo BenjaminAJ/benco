@@ -197,7 +197,7 @@ signInWithGoogleBTN.addEventListener('click', async (event) => {
 
 //Sign up with email and password
 
-signUpFormData.addEventListener('click', async (event) => {
+signUpFormData.addEventListener('click', (event) => {
   event.preventDefault();
 
   if (event.target.nodeName === 'BUTTON') {
@@ -208,8 +208,10 @@ signUpFormData.addEventListener('click', async (event) => {
       const username = signUpFormData.username.value;
       const email = signUpFormData.email.value;
       const password = signUpFormData.password.value;
+      const confirmPwd = signUpFormData.confirmPwd.value;
 
-      createUserWithEmailAndPassword(auth, email, password)
+      if (password === confirmPwd) {
+        createUserWithEmailAndPassword(auth, email, password)
         .then((result) => {
           event.target.innerHTML = `Sign Up`;
           console.log('User account created and user signed in');
@@ -239,6 +241,16 @@ signUpFormData.addEventListener('click', async (event) => {
           event.target.innerHTML = `Sign Up`;
           console.error(err.message);
         });
+
+      }
+      else{
+        //Password does not match
+        const errorMessage = document.querySelector('.error');
+        errorMessage.innerHTML = '*Password does not match';
+        event.target.innerHTML = `Sign Up`;
+        // console.log('Password does not match');
+      }
+
     }
   }
 })
@@ -265,7 +277,9 @@ function signOutUser() {
 async function showCurrentUser() {
 
   onAuthStateChanged(auth, (user)=>{
-    console.log('username:', user.displayName);
+    if (user) {
+      console.log('username:', user.displayName);
+    }
   })
   
 }

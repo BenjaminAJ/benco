@@ -209,10 +209,10 @@ signInWithGoogleBTN.addEventListener('click', async (event) => {
       // The AuthCredential type that was used.
       const credential = GoogleAuthProvider.credentialFromError(error);
 
-      console.log(errorCode, 'error code');
-      console.log(errorMessage, 'error message');
-      console.log(email, 'email');
-      console.log(credential, 'cred');
+      // console.log(errorCode, 'error code');
+      // console.log(errorMessage, 'error message');
+      // console.log(email, 'email');
+      // console.log(credential, 'cred');
       // ...
     })
 })

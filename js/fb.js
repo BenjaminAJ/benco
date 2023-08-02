@@ -182,7 +182,7 @@ window.addEventListener('load', async () => {
 //SignInWithGoogle Module
 
 signInWithGoogleBTN.addEventListener('click', async (event) => {
-  event.preventDefault();
+  event.preventDefault();   
 
   signInWithPopup(auth, provider)
     .then((result) => {
@@ -219,6 +219,21 @@ function ValidateEmail(mail) {
   return (false)
 }
 
+//Validate Password
+function CheckPassword(pwd) 
+{ 
+let passw=  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{7,20}$/;
+if(passw.test(pwd)) 
+{ 
+return true;
+}
+else
+{ 
+console.log('Input Password and Submit [7 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter]');
+return false;
+}
+}
+
 
 //Sign up with email and password
 
@@ -241,37 +256,46 @@ signUpFormData.addEventListener('click', (event) => {
       if (username) {
         if (ValidateEmail(email)) {
           if (password === confirmPwd) {
-            createUserWithEmailAndPassword(auth, email, password)
-              .then((result) => {
-                event.target.innerHTML = `Sign Up`;
-                console.log('User account created and user signed in');
-                onAuthStateChanged(auth, (user) => {
-                  if (user) {
-                    updateProfile(auth.currentUser, {
-                      displayName: username
-                    })
-                      .then(() => {
-                        // Profile updated!
-                        console.log('Profile Updated');
-                        setTimeout(() => {
-                          location.reload();
-                        }, 3000);
-                        // ...
-                      }).catch((error) => {
-                        // An error occurred
-                        // ...
-                        console.error(error);
-                      });
-                  }
-                  else {
-                    console.error('User was unable to sign in');
-                  }
-                })
-              }).catch((err) => {
-                event.target.innerHTML = `Sign Up`;
-                errorMessage.innerHTML = `${err.message}`;
-                console.error(err.message);
-              });
+            if (CheckPassword(password)) {
+              createUserWithEmailAndPassword(auth, email, password)
+                .then((result) => {
+                  errorMessage.innerHTML ='';
+                  event.target.innerHTML = `Sign Up`;
+                  console.log('User account created and user signed in');
+                  onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                      updateProfile(auth.currentUser, {
+                        displayName: username
+                      })
+                        .then(() => {
+                          // Profile updated!
+                          console.log('Profile Updated');
+                          setTimeout(() => {
+                            location.reload();
+                          }, 3000);
+                          // ...
+                        }).catch((error) => {
+                          // An error occurred
+                          // ...
+                          console.error(error);
+                        });
+                    }
+                    else {
+                      console.error('User was unable to sign in');
+                    }
+                  })
+                }).catch((err) => {
+                  event.target.innerHTML = `Sign Up`;
+                  errorMessage.innerHTML = `${err.message}`;
+                  console.error(err.message);
+                });
+            }
+            else{
+            //Password does not pass validation
+            errorMessage.innerHTML = '*Input Password and Submit [7 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter]';
+            event.target.innerHTML = `Sign Up`;
+
+            }
 
           }
           else {

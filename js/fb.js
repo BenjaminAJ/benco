@@ -288,7 +288,7 @@ signUpFormData.addEventListener('click', (event) => {
                     }
                   })
                 }).catch((err) => {
-                  event.target.innerHTML = `Sign Up`;
+                  // event.target.innerHTML = `Sign Up`;
                   if (err.code === 'auth/email-already-exists') {
                     errorMessage.innerHTML = `*email already exists`;
                   }
@@ -304,7 +304,7 @@ signUpFormData.addEventListener('click', (event) => {
             else {
               //Password does not pass validation
               errorMessage.innerHTML = '*Input Password and Submit [7 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter]';
-              event.target.innerHTML = `Sign Up`;
+              // event.target.innerHTML = `Sign Up`;
 
             }
 
@@ -312,7 +312,7 @@ signUpFormData.addEventListener('click', (event) => {
           else {
             //Password does not match
             errorMessage.innerHTML = '*Password does not match';
-            event.target.innerHTML = `Sign Up`;
+            // event.target.innerHTML = `Sign Up`;
             // console.log('Password does not match');
           }
 
@@ -320,7 +320,7 @@ signUpFormData.addEventListener('click', (event) => {
         else {
           //Invalid Email
           errorMessage.innerHTML = '*Enter a Valid email address';
-          event.target.innerHTML = `Sign Up`;
+          // event.target.innerHTML = `Sign Up`;
 
         }
 
@@ -328,13 +328,15 @@ signUpFormData.addEventListener('click', (event) => {
       else {
         //Invalid username
         errorMessage.innerHTML = '*Enter a Valid username';
-        event.target.innerHTML = `Sign Up`;
+        // event.target.innerHTML = `Sign Up`;
 
       }
 
 
     }
   }
+  event.target.innerHTML = `Sign Up`;
+
 })
 //Sign up with google
 

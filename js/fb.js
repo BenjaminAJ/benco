@@ -141,9 +141,16 @@ signInWithEmailAndPasswordBTN.addEventListener('click', (event) => {
           location.reload();
         }, 3000);
         console.log('User signed In');
+        errorSign.innerHTML = "";
       }).catch((err) => {
         signInWithEmailAndPasswordBTN.innerHTML = `Sign In`;
         console.error(err.message);
+        if (err.code === 'auth/user-not-found') {
+          errorSign.innerHTML = "*User not found";
+        }
+        if (err.code === 'auth/wrong-password') {
+          errorSign.innerHTML = "*Wrong password";
+        }
         console.error(err.code);
       });
 
@@ -282,7 +289,15 @@ signUpFormData.addEventListener('click', (event) => {
                   })
                 }).catch((err) => {
                   event.target.innerHTML = `Sign Up`;
-                  errorMessage.innerHTML = `${err.message}`;
+                  if (err.code === 'auth/email-already-exists') {
+                    errorMessage.innerHTML = `email already exists`;
+                  }
+                  if (err.code === 'auth/session-cookie-expired') {
+                    errorMessage.innerHTML = `session expired`;
+                  }
+                  if (err.code === 'auth/too-many-requests') {
+                    errorMessage.innerHTML = `Too many requests. Try again later`;
+                  }
                   console.error(err.message);
                 });
             }

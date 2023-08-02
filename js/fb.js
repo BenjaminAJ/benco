@@ -225,10 +225,9 @@ function CheckPassword(pwd) {
   if (passw.test(pwd)) {
     return true;
   }
-  else {
-    console.log('Input Password and Submit [7 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter]');
-    return false;
-  }
+  console.log('Input Password and Submit [7 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter]');
+  return false;
+
 }
 
 

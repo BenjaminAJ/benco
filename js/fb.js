@@ -193,6 +193,14 @@ signInWithGoogleBTN.addEventListener('click', async (event) => {
       // ...
     })
 })
+//Validate email
+function ValidateEmail(mail) {
+  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+    return (true)
+  }
+  console.log("You have entered an invalid email address!")
+  return (false)
+}
 
 
 //Sign up with email and password
@@ -213,46 +221,65 @@ signUpFormData.addEventListener('click', (event) => {
       const password = signUpFormData.password.value;
       const confirmPwd = signUpFormData.confirmPwd.value;
 
-      if (password === confirmPwd) {
-        createUserWithEmailAndPassword(auth, email, password)
-          .then((result) => {
-            event.target.innerHTML = `Sign Up`;
-            console.log('User account created and user signed in');
-            onAuthStateChanged(auth, (user) => {
-              if (user) {
-                updateProfile(auth.currentUser, {
-                  displayName: username
+      if (username) {
+        if (ValidateEmail(email)) {
+          if (password === confirmPwd) {
+            createUserWithEmailAndPassword(auth, email, password)
+              .then((result) => {
+                event.target.innerHTML = `Sign Up`;
+                console.log('User account created and user signed in');
+                onAuthStateChanged(auth, (user) => {
+                  if (user) {
+                    updateProfile(auth.currentUser, {
+                      displayName: username
+                    })
+                      .then(() => {
+                        // Profile updated!
+                        console.log('Profile Updated');
+                        setTimeout(() => {
+                          location.reload();
+                        }, 3000);
+                        // ...
+                      }).catch((error) => {
+                        // An error occurred
+                        // ...
+                        console.error(error);
+                      });
+                  }
+                  else {
+                    console.error('User was unable to sign in');
+                  }
                 })
-                  .then(() => {
-                    // Profile updated!
-                    console.log('Profile Updated');
-                    setTimeout(() => {
-                      location.reload();
-                    }, 3000);
-                    // ...
-                  }).catch((error) => {
-                    // An error occurred
-                    // ...
-                    console.error(error);
-                  });
-              }
-              else {
-                console.error('User was unable to sign in');
-              }
-            })
-          }).catch((err) => {
+              }).catch((err) => {
+                event.target.innerHTML = `Sign Up`;
+                errorMessage.innerHTML = `${err.message}`;
+                console.error(err.message);
+              });
+
+          }
+          else {
+            //Password does not match
+            errorMessage.innerHTML = '*Password does not match';
             event.target.innerHTML = `Sign Up`;
-            errorMessage.innerHTML = `${err.message}`;
-            console.error(err.message);
-          });
+            // console.log('Password does not match');
+          }
+
+        }
+        else {
+          //Invalid Email
+          errorMessage.innerHTML = '*Enter a Valid email address';
+          event.target.innerHTML = `Sign Up`;
+
+        }
 
       }
       else {
-        //Password does not match
-        errorMessage.innerHTML = '*Password does not match';
+        //Invalid username
+        errorMessage.innerHTML = '*Enter a Valid username';
         event.target.innerHTML = `Sign Up`;
-        // console.log('Password does not match');
+
       }
+
 
     }
   }

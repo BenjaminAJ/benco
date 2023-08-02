@@ -290,7 +290,7 @@ signUpFormData.addEventListener('click', (event) => {
                 }).catch((err) => {
                   event.target.innerHTML = `Sign Up`;
                   if (err.code === 'auth/email-already-exists') {
-                    errorMessage.innerHTML = `email already exists`;
+                    errorMessage.innerHTML = `*email already exists`;
                   }
                   if (err.code === 'auth/session-cookie-expired') {
                     errorMessage.innerHTML = `session expired`;

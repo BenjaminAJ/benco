@@ -182,7 +182,7 @@ window.addEventListener('load', async () => {
 //SignInWithGoogle Module
 
 signInWithGoogleBTN.addEventListener('click', async (event) => {
-  event.preventDefault();   
+  event.preventDefault();
 
   signInWithPopup(auth, provider)
     .then((result) => {
@@ -220,18 +220,15 @@ function ValidateEmail(mail) {
 }
 
 //Validate Password
-function CheckPassword(pwd) 
-{ 
-let passw=  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{7,20}$/;
-if(passw.test(pwd)) 
-{ 
-return true;
-}
-else
-{ 
-console.log('Input Password and Submit [7 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter]');
-return false;
-}
+function CheckPassword(pwd) {
+  let passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{7,20}$/;
+  if (passw.test(pwd)) {
+    return true;
+  }
+  else {
+    console.log('Input Password and Submit [7 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter]');
+    return false;
+  }
 }
 
 
@@ -259,7 +256,7 @@ signUpFormData.addEventListener('click', (event) => {
             if (CheckPassword(password)) {
               createUserWithEmailAndPassword(auth, email, password)
                 .then((result) => {
-                  errorMessage.innerHTML ='';
+                  errorMessage.innerHTML = '';
                   event.target.innerHTML = `Sign Up`;
                   console.log('User account created and user signed in');
                   onAuthStateChanged(auth, (user) => {
@@ -290,10 +287,10 @@ signUpFormData.addEventListener('click', (event) => {
                   console.error(err.message);
                 });
             }
-            else{
-            //Password does not pass validation
-            errorMessage.innerHTML = '*Input Password and Submit [7 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter]';
-            event.target.innerHTML = `Sign Up`;
+            else {
+              //Password does not pass validation
+              errorMessage.innerHTML = '*Input Password and Submit [7 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter]';
+              event.target.innerHTML = `Sign Up`;
 
             }
 
@@ -327,16 +324,16 @@ signUpFormData.addEventListener('click', (event) => {
 })
 //Sign up with google
 
-regGoogle.addEventListener('click', (event)=>{
+regGoogle.addEventListener('click', (event) => {
   event.preventDefault();
 
   signInWithPopup(auth, provider)
-  .then((result) => {
-    console.log(result);
-  }).catch((err) => {
-    console.error(err);
-    console.error(err.message);
-  });
+    .then((result) => {
+      console.log(result);
+    }).catch((err) => {
+      console.error(err);
+      console.error(err.message);
+    });
 
 
 })

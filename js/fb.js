@@ -201,9 +201,15 @@ signInWithGoogleBTN.addEventListener('click', async (event) => {
       const email = error.customData.email;
       // The AuthCredential type that was used.
       const credential = GoogleAuthProvider.credentialFromError(error);
+
+      console.log(errorCode, 'error code');
+      console.log(errorMessage, 'error message');
+      console.log(email, 'email');
+      console.log(credential, 'cred');
       // ...
     })
 })
+
 //Validate email
 function ValidateEmail(mail) {
   if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
@@ -294,6 +300,21 @@ signUpFormData.addEventListener('click', (event) => {
 
     }
   }
+})
+//Sign up with google
+
+regGoogle.addEventListener('clcik', (event)=>{
+  event.preventDefault();
+
+  signInWithPopup(auth, provider)
+  .then((result) => {
+    console.log(result);
+  }).catch((err) => {
+    console.error(err);
+    console.error(err.message);
+  });
+
+
 })
 
 

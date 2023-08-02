@@ -303,7 +303,7 @@ signUpFormData.addEventListener('click', (event) => {
 })
 //Sign up with google
 
-regGoogle.addEventListener('clcik', (event)=>{
+regGoogle.addEventListener('click', (event)=>{
   event.preventDefault();
 
   signInWithPopup(auth, provider)

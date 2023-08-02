@@ -46,6 +46,7 @@ const provider = new GoogleAuthProvider();
 // declarations
 const sponsAdDiv = document.querySelector(".sponsAd");
 const allProdDiv = document.querySelector(".allProd");
+const errorSign = document.querySelector(".errorSign");
 const sponsProdList = [];
 const allProdList = [];
 const spinnerPL = `
@@ -132,18 +133,28 @@ signInWithEmailAndPasswordBTN.addEventListener('click', (event) => {
 
   signInWithEmailAndPasswordBTN.innerHTML = `${spinnerPL}`
 
-  signInWithEmailAndPassword(auth, email, password)
-    .then((result) => {
-      signInWithEmailAndPasswordBTN.innerHTML = `Sign In`;
-      setTimeout(() => {
-        location.reload();
-      }, 3000);
-      console.log('User signed In');
-    }).catch((err) => {
-      signInWithEmailAndPasswordBTN.innerHTML = `Sign In`;
-      console.error(err.message);
-      console.error(err.code);
-    });
+  if (ValidateEmail(email)) {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((result) => {
+        signInWithEmailAndPasswordBTN.innerHTML = `Sign In`;
+        setTimeout(() => {
+          location.reload();
+        }, 3000);
+        console.log('User signed In');
+      }).catch((err) => {
+        signInWithEmailAndPasswordBTN.innerHTML = `Sign In`;
+        console.error(err.message);
+        console.error(err.code);
+      });
+
+  }
+  else {
+    //Invalid Email
+    errorSign.innerHTML = '*Enter a Valid email address';
+    event.target.innerHTML = `Sign Up`;
+
+  }
+
 })
 
 

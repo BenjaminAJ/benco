@@ -47,6 +47,7 @@ addProductFormData.addEventListener('submit', (event)=>{
     let description = addProductFormData.productDescription.value;
     let vendorID = addProductFormData.productVendor.value;
     let vendorName = vendorList.filter((vendor)=> vendor.id === vendorID)
+    let vendorTelNo = vendorName[0].vendorTelNo
     vendorName = vendorName[0].vendorName;
     let datePosted = new Date();
     let sponsored = false;
@@ -71,7 +72,7 @@ addProductFormData.addEventListener('submit', (event)=>{
             console.log('File available at:', downloadURL);
 
             //Add to collection
-            addDoc(colRefProd, {title, price, category, description, datePosted, sponsored, vendorName, imgURL})
+            addDoc(colRefProd, {title, price, category, description, datePosted, sponsored, vendorName, imgURL, vendorTelNo})
             .then((docRef) => {
                 const docId = docRef.id;
                 addProductFormData.submitBTN.innerHTML = `submit`;

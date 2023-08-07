@@ -442,6 +442,7 @@ function signOutUser() {
             catList.push({...product.data(), id});
           }
           if (getItemCat === 'All') {
+            spefCatTitle.innerHTML = `${getItemCat} products`;
             let id = product.id;
             catList.push({...product.data(), id});
           }

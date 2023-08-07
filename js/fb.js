@@ -441,6 +441,10 @@ function signOutUser() {
             let id = product.id;
             catList.push({...product.data(), id});
           }
+          if (getItemCat === 'All') {
+            let id = product.id;
+            catList.push({...product.data(), id});
+          }
         });
         spefCat.innerHTML ='';
         if (catList.length == 0) {

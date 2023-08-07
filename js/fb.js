@@ -442,7 +442,7 @@ function signOutUser() {
             catList.push({...product.data(), id});
           }
         });
-        // spefCatSec.innerHTML ='';
+        spefCatSec.innerHTML ='';
         if (catList.length == 0) {
           spefCat.innerHTML = `No product found`;
         }

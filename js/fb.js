@@ -442,9 +442,9 @@ function signOutUser() {
             catList.push({...product.data(), id});
           }
         });
-        spefCatSec.innerHTML ='';
+        spefCat.innerHTML ='';
         if (catList.length == 0) {
-          spefCat.innerHTML = `No product found`;
+          spefCat.innerHTML = `<p class="text-center mt-2">No product found</p>`;
         }
         catList.forEach(prod => {
           spefCat.innerHTML += `
